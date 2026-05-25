@@ -6808,6 +6808,970 @@ collection:
                 send: true
                 store: true
               rebuildPath: true
+  - name: Carrier API - Configuration
+    meta:
+      id: fld_c26be9f9bfff49979ba20fe78533a83e
+      created: 1779700451020
+      modified: 1779700451020
+      sortKey: -1779700445806
+      description: Integrations registry, Vault-backed secrets management, task runner
+        (CRUD + execution + results), and cron scheduling for the Carrier
+        platform.
+    children:
+      - name: Integrations
+        meta:
+          id: fld_d36b3ccb11e64c2fa63038abaff4e987
+          created: 1779700451024
+          modified: 1779700451024
+          sortKey: -1779700445805
+          description: ""
+        children:
+          - url: "{{CarrierUrl}}/api/v1/integrations/available/{{project_id}}"
+            name: List Available Integration Types
+            meta:
+              id: req_4ae3743c21f94558943754e635044f54
+              created: 1779700451026
+              modified: 1779700451026
+              isPrivate: false
+              description: Returns the list of registered integration types (plugins) that can
+                be configured. Optionally filter by ?section= (comma-separated).
+                No project-specific data — shows what integrations exist in the
+                system.
+              sortKey: -1779700445804
+            method: GET
+            parameters:
+              - name: section
+                value: clouds
+                disabled: true
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/integrations/integrations/{{project_id}}"
+            name: List Project Integrations
+            meta:
+              id: req_2532c05cb3654da3bcbdc837b973e8c4
+              created: 1779700451028
+              modified: 1779700451028
+              isPrivate: false
+              description: Returns all integrations configured for this project. Optionally
+                filter by ?name= or ?section=. Each item includes
+                integration_id, name, section, settings, config, status, and
+                is_default flag.
+              sortKey: -1779700445803
+            method: GET
+            parameters:
+              - name: name
+                value: s3_integration
+                disabled: true
+              - name: section
+                value: system
+                disabled: true
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/integrations/integration/{{project_id}}/{{integrati\
+              on_uid}}"
+            name: Get Integration by ID
+            meta:
+              id: req_ac326f3284ed4e09b077aa0fee8e3331
+              created: 1779700451029
+              modified: 1779700451029
+              isPrivate: false
+              description: Returns a single integration by its UID or integer id. Falls back
+                to admin-level lookup if not found in the project scope.
+              sortKey: -1779700445802
+            method: GET
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/integrations/integration/{{integration_name}}"
+            name: Create Integration
+            meta:
+              id: req_420d8e861eae4d109f5eaadec17ad52d
+              created: 1779700451031
+              modified: 1779700451031
+              isPrivate: false
+              description: Creates a new integration. URL uses the integration type name (e.g.
+                s3_integration, smtp, jira). Body fields vary per integration
+                type — settings are validated against the integration's
+                settings_model. Set is_default=true to make it the default for
+                its section.
+              sortKey: -1779700445801
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "project_id": {{_['project_id']}},
+                  "is_default": false,
+                  "status": "success",
+                  "config": {},
+                  "access_key": "AKIAIOSFODNN7EXAMPLE",
+                  "secret_access_key": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+                  "region_name": "us-east-1",
+                  "bucket": "my-bucket"
+                }
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/integrations/integration/{{integration_id}}"
+            name: Update Integration
+            meta:
+              id: req_ac4b0a3d728145539bf9f86c2091826e
+              created: 1779700451033
+              modified: 1779700451033
+              isPrivate: false
+              description: Updates an existing integration by its integer id. project_id must
+                be in the body. Settings are re-validated against the
+                integration's settings_model. Set is_default=true to promote to
+                default.
+              sortKey: -1779700445800
+            method: PUT
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "project_id": {{_['project_id']}},
+                  "is_default": true,
+                  "config": {},
+                  "access_key": "AKIAIOSFODNN7EXAMPLE",
+                  "secret_access_key": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+                  "region_name": "us-east-1",
+                  "bucket": "my-bucket"
+                }
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/integrations/integration/{{project_id}}/{{integrati\
+              on_id}}"
+            name: Set Integration as Default
+            meta:
+              id: req_43d3df43160c460abc6294b4546de207
+              created: 1779700451036
+              modified: 1779700451036
+              isPrivate: false
+              description: Marks an integration as the project default. If local=true in body,
+                uses a project-level (local) integration. If local is
+                absent/false, promotes an admin-level integration to be the
+                project default.
+              sortKey: -1779700445799
+            method: PATCH
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "local": true
+                }
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/integrations/integration/{{project_id}}/{{integrati\
+              on_id}}"
+            name: Delete Integration
+            meta:
+              id: req_c4e8207e50ec4d6289781149316fe5a2
+              created: 1779700451037
+              modified: 1779700451037
+              isPrivate: false
+              description: Deletes a project integration by its integer id. Also removes the
+                default flag if this was the default integration. Returns 204 No
+                Content.
+              sortKey: -1779700445798
+            method: DELETE
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/integrations/check_settings/{{integration_name}}"
+            name: Check Integration Connection
+            meta:
+              id: req_fa26ffc78a204502a0b0b72c6ea08056
+              created: 1779700451038
+              modified: 1779700451038
+              isPrivate: false
+              description: Tests connectivity for an integration without saving it. Body
+                fields are the same as Create Integration settings. Returns 'OK'
+                on success or validation errors. Set save_action=true to both
+                check and save in one call.
+              sortKey: -1779700445797
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "access_key": "AKIAIOSFODNN7EXAMPLE",
+                  "secret_access_key": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+                  "region_name": "us-east-1",
+                  "bucket": "my-bucket",
+                  "save_action": false
+                }
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Secrets
+        meta:
+          id: fld_0e57e060c328494e9ecd035266f1027a
+          created: 1779700451038
+          modified: 1779700451038
+          sortKey: -1779700445796
+          description: ""
+        children:
+          - url: "{{CarrierUrl}}/api/v1/secrets/secrets/{{project_id}}"
+            name: List Secrets (names only)
+            meta:
+              id: req_ccb36901ca5a473fb6915fcd36390111
+              created: 1779700451039
+              modified: 1779700451039
+              isPrivate: false
+              description: 'Returns secret names only — values are never returned in this
+                endpoint. Response: [{name: "SECRET_NAME"}]. Use Get Secret to
+                retrieve the value for a specific secret.'
+              sortKey: -1779700445795
+            method: GET
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/secrets/secrets/{{project_id}}"
+            name: Create Secret
+            meta:
+              id: req_d3197b8771f5422c89ce2743b5815ca9
+              created: 1779700451039
+              modified: 1779700451039
+              isPrivate: false
+              description: Creates a new secret in the project's Vault. Returns 400 if the
+                secret name already exists. Returns {name} on success with 201.
+              sortKey: -1779700445794
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "name": "MY_API_KEY",
+                  "value": "super-secret-value"
+                }
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/secrets/secret/{{project_id}}/{{secret_name}}"
+            name: Get Secret Value
+            meta:
+              id: req_b0e9fffb638245a99d546a88649bc542
+              created: 1779700451040
+              modified: 1779700451040
+              isPrivate: false
+              description: Retrieves a secret's value by name. Also checks hidden secrets if
+                not found in plain secrets. Returns {name, value, is_hidden}.
+                secret_name in the URL is URL-encoded automatically.
+              sortKey: -1779700445793
+            method: GET
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/secrets/secret/{{project_id}}/{{secret_name}}"
+            name: Update Secret
+            meta:
+              id: req_9737db955bb54b18b1044c5e1de171b0
+              created: 1779700451042
+              modified: 1779700451042
+              isPrivate: false
+              description: Updates (replaces) an existing secret's value. The secret name in
+                the URL identifies which secret to update. Optionally include
+                'name' in the body to rename the secret at the same time.
+              sortKey: -1779700445792
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "value": "new-secret-value"
+                }
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/secrets/secret/{{project_id}}/{{secret_name}}"
+            name: Delete Secret
+            meta:
+              id: req_202d6dde86694a4397edffc642e2d11b
+              created: 1779700451043
+              modified: 1779700451043
+              isPrivate: false
+              description: Deletes a secret by name. Returns 204 No Content. If the secret
+                name does not exist, the operation is silently ignored (no
+                error).
+              sortKey: -1779700445791
+            method: DELETE
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/secrets/hide/{{project_id}}/{{secret_name}}"
+            name: Hide Secret
+            meta:
+              id: req_39702c9d2db04a85b88fc5b6f80dcc68
+              created: 1779700451044
+              modified: 1779700451044
+              isPrivate: false
+              description: Moves a secret from plain secrets to hidden secrets in Vault.
+                Hidden secrets are not listed in the List endpoint and their
+                values are obfuscated in UI. Returns 400 if the secret name is
+                not found in plain secrets.
+              sortKey: -1779700445790
+            method: POST
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v0/secrets/secrets/{{project_id}}"
+            name: Bulk Set Secrets (v0)
+            meta:
+              id: req_32ea2658e61c47b2853aeab088cf30b0
+              created: 1779700451045
+              modified: 1779700451045
+              isPrivate: false
+              description: Legacy v0 endpoint. Overwrites ALL project secrets at once with the
+                provided dict. Use with caution — this replaces the entire
+                secrets store, not a merge. The v1 endpoints (Create/Update) are
+                preferred for incremental changes.
+              sortKey: -1779700445789
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "secrets": {
+                    "MY_KEY": "my-value",
+                    "ANOTHER_KEY": "another-value"
+                  }
+                }
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Tasks
+        meta:
+          id: fld_cdfb601d640a40aaba3b1b3c8d647750
+          created: 1779700451045
+          modified: 1779700451045
+          sortKey: -1779700445788
+          description: ""
+        children:
+          - url: "{{CarrierUrl}}/api/v1/tasks/tasks/default/{{project_id}}"
+            name: List Tasks
+            meta:
+              id: req_80a2950781064bc28a41b9f3510ad4b3
+              created: 1779700451046
+              modified: 1779700451046
+              isPrivate: false
+              description: Returns all tasks for the project. Includes both project-scoped
+                tasks and administration-mode tasks visible to this project.
+                Each row includes task_id, task_name, task_handler, region,
+                env_vars, and size (from MinIO).
+              sortKey: -1779700445787
+            method: GET
+            parameters:
+              - name: limit
+                value: "20"
+                disabled: true
+              - name: offset
+                value: "0"
+                disabled: true
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/tasks/tasks/default/{{project_id}}/{{task_id}}"
+            name: Get Task
+            meta:
+              id: req_1cdf531088194430bb1830e6ea0512bb
+              created: 1779700451047
+              modified: 1779700451047
+              isPrivate: false
+              description: Returns a single task by task_id. Use ?get_parameters=true to get
+                only the parameter definitions without the full task config.
+              sortKey: -1779700445786
+            method: GET
+            parameters:
+              - name: get_parameters
+                value: "true"
+                disabled: true
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/tasks/tasks/default/{{project_id}}"
+            name: Create Task
+            meta:
+              id: req_6c411046174b4479b51c4b2f84cccb88
+              created: 1779700451047
+              modified: 1779700451047
+              isPrivate: false
+              description: "Creates a new task. Requires multipart/form-data with: 'file' (ZIP
+                archive with task code) and 'data' (JSON string with: task_name,
+                task_handler, engine_location, runtime, cpu_cores, memory,
+                timeout, task_parameters, monitoring_settings). Omit the file to
+                validate data only without uploading."
+              sortKey: -1779700445785
+            method: POST
+            body:
+              mimeType: multipart/form-data
+              params:
+                - name: file
+                  disabled: false
+                  fileName: ""
+                  type: file
+                - name: data
+                  value: '{"task_name": "my_task", "task_handler": "lambda_function.handler",
+                    "engine_location": "default", "runtime": "Python 3.8",
+                    "cpu_cores": 1, "memory": 128, "timeout": 60,
+                    "task_parameters": [], "monitoring_settings": {}}'
+                  disabled: false
+                  type: text
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+              - name: Content-Type
+                value: multipart/form-data
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/tasks/tasks/default/{{project_id}}/{{task_id}}"
+            name: Update Task
+            meta:
+              id: req_557e238446384b0787bc51c12116fbd9
+              created: 1779700451048
+              modified: 1779700451048
+              isPrivate: false
+              description: Updates an existing task. Same multipart format as Create. If file
+                is omitted, the existing ZIP is kept (potentially migrated to
+                new S3 settings if s3_settings changed). Returns updated task
+                JSON with file size.
+              sortKey: -1779700445784
+            method: PUT
+            body:
+              mimeType: multipart/form-data
+              params:
+                - name: file
+                  disabled: false
+                  fileName: ""
+                  type: file
+                - name: data
+                  value: '{"task_name": "my_task_updated", "task_handler":
+                    "lambda_function.handler", "task_parameters": [],
+                    "monitoring_settings": {}}'
+                  disabled: false
+                  type: text
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+              - name: Content-Type
+                value: multipart/form-data
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/tasks/tasks/default/{{project_id}}/{{task_id}}"
+            name: Delete Task
+            meta:
+              id: req_5cb702a15deb4f5986c6d9686aedbb8d
+              created: 1779700451048
+              modified: 1779700451048
+              isPrivate: false
+              description: Deletes a task and removes its ZIP file from MinIO. Returns 204 No
+                Content.
+              sortKey: -1779700445783
+            method: DELETE
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Task Execution
+        meta:
+          id: fld_a240886452cf40ec958a3085aa0abe04
+          created: 1779700451049
+          modified: 1779700451049
+          sortKey: -1779700445782
+          description: ""
+        children:
+          - url: "{{CarrierUrl}}/api/v1/tasks/run_task/{{project_id}}/{{task_id}}"
+            name: Get Task Config (with secrets)
+            meta:
+              id: req_252f7bbe42e442faa044fafc4e966cdc
+              created: 1779700451049
+              modified: 1779700451049
+              isPrivate: false
+              description: Returns the task definition. With ?exec=true all secret
+                placeholders in env_vars are resolved to their actual Vault
+                values — use this when preparing an execution context.
+              sortKey: -1779700445781
+            method: GET
+            parameters:
+              - name: exec
+                value: "true"
+                disabled: false
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/tasks/run_task/{{project_id}}/{{task_id}}"
+            name: Run Task
+            meta:
+              id: req_690e8d673cd1434c858898d4b2b6aa9c
+              created: 1779700451050
+              modified: 1779700451050
+              isPrivate: false
+              description: Triggers task execution. Body can be either an array of {name,
+                default} parameter objects or a plain dict. The task is
+                dispatched to the queue defined by task.region. Returns the task
+                runner response with a result code.
+              sortKey: -1779700445780
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                [
+                  {
+                    "name": "param1",
+                    "default": "value1"
+                  },
+                  {
+                    "name": "param2",
+                    "default": "value2"
+                  }
+                ]
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Task Results
+        meta:
+          id: fld_94dbef625f3b48edb0de076346dfc2dc
+          created: 1779700451052
+          modified: 1779700451052
+          sortKey: -1779700445779
+          description: ""
+        children:
+          - url: "{{CarrierUrl}}/api/v1/tasks/results/default/{{project_id}}/{{task_id}}"
+            name: List Task Results
+            meta:
+              id: req_7c609825fcbf41eeb91469bff3ac5072
+              created: 1779700451053
+              modified: 1779700451053
+              isPrivate: false
+              description: Returns all result records for a task. Each row includes
+                task_result_id, task_status, task_duration, results, log, and
+                task_stats.
+              sortKey: -1779700445778
+            method: GET
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/tasks/results/default/{{project_id}}"
+            name: Create Task Result
+            meta:
+              id: req_fbb8a1d126564396964e680e5f9138cd
+              created: 1779700451054
+              modified: 1779700451054
+              isPrivate: false
+              description: Creates a new task result record (called by the task runner at
+                start). Returns {message, code, task_id} with 201.
+              sortKey: -1779700445777
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "task_id": "{{task_id}}",
+                  "task_result_id": "{{task_result_id}}",
+                  "task_status": "IN_PROGRESS",
+                  "task_duration": null,
+                  "results": null,
+                  "log": null,
+                  "task_stats": null
+                }
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/tasks/results/default/{{project_id}}"
+            name: Update Task Result (Finalize)
+            meta:
+              id: req_5f3a9520edb0408b81064d7c428d43b2
+              created: 1779700451056
+              modified: 1779700451056
+              isPrivate: false
+              description: Finalizes a task result (called by the task runner on completion).
+                Fires a 'task_finished' event and dumps logs to MinIO.
+                task_result_id is passed as a query param. Returns 202 Accepted.
+              sortKey: -1779700445776
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "task_duration": 42.5,
+                  "task_status": "SUCCESS",
+                  "results": {"output": "task completed"},
+                  "log": "Task log output here",
+                  "task_stats": {"memory_used": "128MB"}
+                }
+            parameters:
+              - name: task_result_id
+                value: "{{task_result_id}}"
+                disabled: false
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/tasks/task_status/default/{{project_id}}/{{task_id}\
+              }"
+            name: Check Task Status (In-Progress)
+            meta:
+              id: req_7919e350c9384d0a842f3f0c96d2c7e5
+              created: 1779700451057
+              modified: 1779700451057
+              isPrivate: false
+              description: "Returns whether any runs of this task are currently IN_PROGRESS.
+                Response: {code, IN_PROGRESS: bool, task_result_ids: []}. Use
+                this to poll for completion."
+              sortKey: -1779700445775
+            method: GET
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/tasks/loki_url/default/{{project_id}}"
+            name: Get Loki Log URL
+            meta:
+              id: req_6c339f39edd846c389a59663fa9d7174
+              created: 1779700451058
+              modified: 1779700451058
+              isPrivate: false
+              description: Returns a Loki WebSocket URL for streaming live logs for a task
+                run. Pass either task_result_id (specific run) or task_id (most
+                recent run). Returns {websocket_url}.
+              sortKey: -1779700445774
+            method: GET
+            parameters:
+              - name: task_result_id
+                value: "{{task_result_id}}"
+                disabled: false
+              - name: task_id
+                value: "{{task_id}}"
+                disabled: true
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/tasks/download_task_log/default/{{project_id}}/{{ta\
+              sk_name}}/{{task_result_id}}"
+            name: Download Task Log File
+            meta:
+              id: req_752ea5575f29430982e9c6dd7a0a3332
+              created: 1779700451059
+              modified: 1779700451059
+              isPrivate: false
+              description: Downloads the persisted log file for a completed task run from
+                MinIO. File is stored as {task_result_id}.log in the task's
+                bucket. Returns the raw log file as an attachment.
+              sortKey: -1779700445773
+            method: GET
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Scheduling
+        meta:
+          id: fld_a57c1941f03c49b0ba368c1bb6e22975
+          created: 1779700451061
+          modified: 1779700451061
+          sortKey: -1779700445772
+          description: ""
+        children:
+          - url: "{{CarrierUrl}}/api/v1/scheduling/schedules/{{project_id}}"
+            name: List Schedules
+            meta:
+              id: req_498bc8dbd0b645918cef67dc2ac8cabc
+              created: 1779700451062
+              modified: 1779700451062
+              isPrivate: false
+              description: Returns all cron schedules for the project. Each schedule includes
+                id, name, cron expression, active flag, rpc_func (the RPC called
+                on trigger), rpc_kwargs, and last_run timestamp.
+              sortKey: -1779700445771
+            method: GET
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{CarrierUrl}}/api/v1/scheduling/schedules/{{project_id}}"
+            name: Update Schedule
+            meta:
+              id: req_9d9a412ec0da4d418b9a15dbf9888e8b
+              created: 1779700451063
+              modified: 1779700451063
+              isPrivate: false
+              description: Updates an existing schedule. The schedule id must be included in
+                the request body. Supports partial updates — only send fields
+                you want to change. cron expression is validated (must be a
+                valid 5-field cron string). Returns 204 No Content.
+              sortKey: -1779700445770
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "id": {{_['schedule_id']}},
+                  "name": "nightly-smoke-test",
+                  "cron": "0 2 * * *",
+                  "active": true,
+                  "rpc_kwargs": {
+                    "test_id": 42,
+                    "test_params": []
+                  }
+                }
+            headers:
+              - name: Authorization
+                value: bearer {{token}}
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
 cookieJar:
   name: Default Jar
   meta:
@@ -6828,7 +7792,7 @@ environments:
   meta:
     id: env_64b058053fbf0908fb3bdf50562409588de0f0c8
     created: 1779181884375
-    modified: 1779204465245
+    modified: 1779700450987
     isPrivate: false
   data:
     CarrierUrl: http://localhost
@@ -6860,3 +7824,11 @@ environments:
     event_id: ""
     board_id_int: ""
     ticket_hash_id: ""
+    integration_name: s3_integration
+    integration_id: ""
+    integration_uid: ""
+    secret_name: ""
+    task_id: ""
+    task_name: ""
+    task_result_id: ""
+    schedule_id: ""
